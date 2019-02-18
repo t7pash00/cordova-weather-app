@@ -9,7 +9,7 @@ const API_KEY = "17cab33d1ef3f71035ca2eb474f0f823";
 class App extends Component {
   constructor(props){
       super(props);
-      this.getWeather = this.getWeather.bind(this);
+    this.getWeather = this.getWeather.bind(this);
  
   
   this.state = {
@@ -50,6 +50,7 @@ class App extends Component {
     }
   }
 
+
   render() {
     return (
       <div>
@@ -61,8 +62,10 @@ class App extends Component {
                   <Header/>
                 </div>
                 <div className="col-xs-7 form-container">
-                  <Form getWeather={this.getWeather} />
-                  <Weather 
+                  <Form getWeather={this.getWeather}
+                    />
+                    
+                { <Weather 
                     temperature={this.state.temperature} 
                     humidity={this.state.humidity}
                     city={this.state.city}
@@ -70,7 +73,7 @@ class App extends Component {
                     description={this.state.description}
                     error={this.state.error}
                     
-                  />
+                  /> }
             
                 </div>
               </div>
