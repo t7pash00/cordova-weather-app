@@ -81,7 +81,7 @@ class App extends Component {
   initDB() {
     localForage.config({
       driver: localForage.INDEXEDDB, // Force WebSQL; same as using setDriver()
-      name: 'WeatherShiva',
+      name: 'WeatherForsee',
       version: 1.0,
       storeName: 'dataStorage', // Should be alphanumeric, with underscores.
       description: 'some description'
