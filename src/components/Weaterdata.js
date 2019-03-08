@@ -9,7 +9,7 @@ class Weaterdata extends Component {
               <h5 className="card-title">{ this.props.city }, { this.props.country }</h5>
               <p className="card-text">{this.props.temperature} °C</p>
               <button onClick={this.props.showWeather}>More Details</button>
-            
+              <button onClick={() => this.props.saveCityData(this.props.currentData)}>Add to Favorites</button>
             </div>  
           </div>
                

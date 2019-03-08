@@ -26,7 +26,9 @@ class App extends Component {
       error: undefined,
       moreDetails: false,
       appStart: true,
-      savedCities:[]
+      savedCities:[], 
+      currentCityData: [],
+      forecast: []
     }
     localForage.iterate((cityDataFromDb, key, iterationNumber) => {
       let currentCities = lodash.cloneDeep(this.state.savedCities);
@@ -45,16 +47,26 @@ class App extends Component {
     e.preventDefault();
     this.setState({ moreDetails: false });
     this.setState({ appStart: false });
+    
 
     const city = e.target.elements.city.value;
     const country = e.target.elements.country.value;
     const api_call = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${API_KEY}&units=metric`);
     const data = await api_call.json();
+    this.setState({currentCityData: data});
     console.log("GETwETHER DATA, ", data);
+    console.log("getWeather, currentcitydata", this.state.currentCityData);
+    
+    const forecast_call = await fetch (`http://api.openweathermap.org/data/2.5/forecast?q=${city},${country}&appid=${API_KEY}&units=metric`);
+    console.log("getWeather, forecast call ", forecast_call);  
+    const forecast_data = await forecast_call.json();
+      console.log("GETwEATHER, forecast data", forecast_data);
+      this.setState({forecast: forecast_data});
+
       this.saveCity({
-          city,
-          data                
-      });
+        city,
+        data                
+    });
 
     if (city && country) {
 
@@ -64,7 +76,8 @@ class App extends Component {
         country: data.sys.country,
         humidity: data.main.humidity,
         description: data.weather[0].description,
-        error: ""
+        error: "",
+        // currentCityData: data
       });
     } else {
       this.setState({
@@ -73,11 +86,16 @@ class App extends Component {
         country: undefined,
         humidity: undefined,
         description: undefined,
-        error: "Please enter the values."
+        error: "Please enter the values.",
+        // currentCityData: []
       });
     }
   }
 }
+
+
+
+
   initDB() {
     localForage.config({
       driver: localForage.INDEXEDDB, // Force WebSQL; same as using setDriver()
@@ -148,11 +166,14 @@ class App extends Component {
     const showWeather = () => {
       if (!this.state.appStart) {
         if (!this.state.moreDetails) {
+            console.log("showWeather, state", this.state);
 
           return <Weaterdata
             temperature={this.state.temperature}
             city={this.state.city}
             showWeather={moreDetails}
+            // currrentData={this.state.currentCityData}
+            // saveCityData={this.saveCity}
           />
         } else {
           return <Weather
@@ -162,8 +183,10 @@ class App extends Component {
             country={this.state.country}
             description={this.state.description}
             error={this.state.error}
+            forecast={this.state.forecast}
           />
         }
+
       }
     }
 
@@ -201,3 +224,7 @@ class App extends Component {
 
 
 export default App;
+
+const styles = {
+
+}
