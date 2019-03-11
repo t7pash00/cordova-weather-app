@@ -1,13 +1,15 @@
-import React, { Component } from 'react'
-
+import React, { Component } from 'react';
+import 'bootstrap';
 
 class Header extends Component {
     render () {
         return (
-	<div className = "Weather">
-		<h1 className="title-container__title">Weather Finder</h1>
-		<h3 className="title-container__subtitle">Find out temperature, conditions and more...</h3>
-	</div>
+            <div className="container-fluid bg-light">
+                <div className="p-4">
+                    <h1>Weather Finder</h1>
+                    <h4 className="subhead">Find out temperature, conditions and more.....</h4>
+                </div>
+            </div>
         )
     }
 }

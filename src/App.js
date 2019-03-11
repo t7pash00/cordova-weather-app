@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
-import Example from './components/Example';
 import Form from './components/Form';
 import Header from './components/Header';
-import Weather from './components/Weather';
-import Weaterdata from './components/Weaterdata';
+import WeatherData from './components/WeatherData';
 import localForage from 'localforage';
 import lodash from 'lodash';
 import WeatherTeaser from './components/WeatherTeaser';
@@ -67,7 +65,7 @@ class App extends Component {
         const api_call = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${API_KEY}&units=metric`);
         const data = await api_call.json();
         this.setState({currentCityData: data});
-        console.log("GETwETHER DATA, ", data);
+        console.log("GETWEATHER DATA, ", data);
         console.log("getWeather, currentcitydata", this.state.currentCityData);
 
         const forecast_call = await fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${city},${country}&appid=${API_KEY}&units=metric`);
@@ -113,7 +111,7 @@ class App extends Component {
         // console.log("initDB, state", this.state);
         localForage.config({
             driver: localForage.INDEXEDDB, // Force WebSQL; same as using setDriver()
-            name: 'WeatherForsee',
+            name: 'WeatherDetail',
             version: 1.0,
             storeName: 'dataStorage', // Should be alphanumeric, with underscores.
             description: 'some description'
@@ -134,6 +132,7 @@ class App extends Component {
             savedCities = lodash.cloneDeep(stateData.savedCities);
             const newCity = {
                 city: cityAndWeatherData.name,
+                country: cityAndWeatherData.sys.country,
                 data: cityAndWeatherData
             };
             // savedCities.unshift(cityAndWeatherData);
@@ -196,7 +195,7 @@ class App extends Component {
             console.log("render, showWeather, state", this.state);
             if (!this.state.appStart && this.state.city) {
                 if (!this.state.moreDetails) {
-                    return <Weaterdata
+                    return <WeatherData
                         temperature={this.state.temperature}
                         city={this.state.city}
                         country={this.state.country}
@@ -206,7 +205,7 @@ class App extends Component {
                         stateData={this.state}
                     />
                 } else {
-                    return <Weather
+                    return <WeatherData
                         temperature={this.state.temperature}
                         humidity={this.state.humidity}
                         city={this.state.city}
@@ -221,28 +220,26 @@ class App extends Component {
 
         return (
             <div>
-                <div className="wrapper">
-                    <div className="main">
-                        <div className="container">
-                            <div className="row">
-                                <div className="col-xs-5 title-container">
-                                    <Header/>
-                                </div>
-                                <div className="col-xs-7 form-container">
-                                    <Form getWeather={/*this.getWeather*/this.onClickGetWeather}
-                                    />
-                                    {showWeather()}
-                                    <div>
-                                        {
-                                            this.state.savedCities.map(city => {
-                                                console.log("render, city", city);
-                                                return <WeatherTeaser key={city.data.id} data={city}
-                                                                      update={this.updateCityWeather}/>
-                                            })}
-                                    </div>
-
-                                </div>
-                            </div>
+                <div>
+                    <Header />
+                </div>
+                <div className="header" style={{padding: '40px'}}>
+                    <div>
+                        <Form getWeather={this.onClickGetWeather} />
+                    </div>
+                    <div>
+                        {showWeather()}
+                    </div>
+                    <button className="btn btn-dark mt-3" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        Your Saved Cities
+                    </button>
+                    <div className="collapse mt-3" id="collapseExample">
+                        <div className="row">
+                            {
+                            this.state.savedCities.map(city => {
+                                console.log("render, city", city);
+                                return <WeatherTeaser key={city.data.id} data={city} update={this.updateCityWeather}/>
+                            })}
                         </div>
                     </div>
                 </div>
