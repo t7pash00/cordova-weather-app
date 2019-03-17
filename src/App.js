@@ -213,6 +213,9 @@ class App extends Component {
                         description={this.state.description}
                         error={this.state.error}
                         forecast={this.state.forecast}
+                        currentData={this.state.currentCityData}
+                        saveCityData={this.saveCity}
+                        stateData={this.state}
                     />
                 }
             }
