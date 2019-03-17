@@ -59,25 +59,17 @@ class App extends Component {
         this.setState({moreDetails: false});
         // this.setState({appStart: false});
 
-
-        // const city = e.target.elements.city.value;
-        // const country = e.target.elements.country.value;
-        const api_call = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${API_KEY}&units=metric`);
+        const api_call = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${API_KEY}&units=metric`);
         const data = await api_call.json();
         this.setState({currentCityData: data});
         console.log("GETWEATHER DATA, ", data);
         console.log("getWeather, currentcitydata", this.state.currentCityData);
 
-        const forecast_call = await fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${city},${country}&appid=${API_KEY}&units=metric`);
+        const forecast_call = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city},${country}&appid=${API_KEY}&units=metric`);
         console.log("getWeather, forecast call ", forecast_call);
         const forecast_data = await forecast_call.json();
         console.log("GETwEATHER, forecast data", forecast_data);
         this.setState({forecast: forecast_data});
-
-        //   this.saveCity({
-        //     city,
-        //     data
-        // });
 
         if (city && country) {
             console.log("getWeather, data.sys", data.sys);
@@ -255,4 +247,3 @@ class App extends Component {
 
 export default App;
 
-const styles = {}
